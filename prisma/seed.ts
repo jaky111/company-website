@@ -1,0 +1,85 @@
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+
+async function main() {
+    console.log('🌱 Starting database seeding...');
+
+    // Create a category
+    const category = await prisma.category.create({
+        data: {
+            name: '企业服务',
+        },
+    });
+    console.log('✅ Created category:', category.name);
+
+    // Create a featured product
+    const product = await prisma.product.create({
+        data: {
+            title: '企业级解决方案',
+            slug: 'enterprise-solution',
+            summary: '为企业提供全方位的数字化转型解决方案',
+            description: `
+        <h2>产品简介</h2>
+        <p>我们的企业级解决方案致力于帮助企业实现数字化转型,提升运营效率。</p>
+        <h3>核心功能</h3>
+        <ul>
+          <li>智能数据分析</li>
+          <li>自动化流程管理</li>
+          <li>云端协作平台</li>
+        </ul>
+      `,
+            coverImage: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
+            images: [
+                'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
+                'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800',
+            ],
+            categoryId: category.id,
+            isFeatured: true,
+        },
+    });
+    console.log('✅ Created product:', product.title);
+
+    // Create a company news post
+    const post = await prisma.post.create({
+        data: {
+            title: '公司成功完成A轮融资',
+            type: 'COMPANY',
+            content: `
+        <p>我们很高兴地宣布,公司已成功完成A轮融资,融资金额达1000万美元。</p>
+        <p>本轮融资将主要用于:</p>
+        <ul>
+          <li>产品研发和技术创新</li>
+          <li>市场拓展和团队建设</li>
+          <li>客户服务体系完善</li>
+        </ul>
+        <p>感谢投资方的信任与支持!</p>
+      `,
+            author: '市场部',
+            views: 0,
+            published: true,
+        },
+    });
+    console.log('✅ Created post:', post.title);
+
+    // Create an admin user (password should be hashed in production)
+    const user = await prisma.user.create({
+        data: {
+            username: 'admin',
+            password: 'admin123', // In production, use bcrypt to hash passwords
+            role: 'ADMIN',
+        },
+    });
+    console.log('✅ Created admin user:', user.username);
+
+    console.log('🎉 Database seeding completed successfully!');
+}
+
+main()
+    .catch((e) => {
+        console.error('❌ Error during seeding:', e);
+        process.exit(1);
+    })
+    .finally(async () => {
+        await prisma.$disconnect();
+    });

@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 管理员用户表
+model User {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String   // 加密存储
+  role      String   @default("ADMIN") // ADMIN, EDITOR
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 产品分类表
+model Category {
+  id       String    @id @default(cuid())
+  name     String
+  products Product[]
+}
+
+// 产品表
+model Product {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique // URL友好名,如 product-a
+  summary     String   @db.Text // 简述
+  description String   @db.Text // 富文本详情
+  coverImage  String   // 缩略图URL
+  images      String[] // 图册 JSON 数组
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
+  isFeatured  Boolean  @default(false) // 是否首页推荐
+  pdfUrl      String?  // 产品手册下载链接
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// 新闻/文章表
+model Post {
+  id        String   @id @default(cuid())
+  title     String
+  type      String   // 'COMPANY' | 'INDUSTRY'
+  content   String   @db.Text
+  author    String
+  views     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+// 留言/线索表
+model Inquiry {
+  id          String   @id @default(cuid())
+  name        String
+  phone       String
+  company     String?
+  description String?  @db.Text
+  status      String   @default("PENDING") // PENDING, PROCESSED
+  createdAt   DateTime @default(now())
+}
