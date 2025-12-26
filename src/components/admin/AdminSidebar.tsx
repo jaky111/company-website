@@ -9,7 +9,8 @@ import {
     FileText,
     MessageSquare,
     Home,
-    LogOut
+    LogOut,
+    Settings
 } from 'lucide-react';
 
 const navigation = [
@@ -17,6 +18,7 @@ const navigation = [
     { name: '产品管理', href: '/admin/products', icon: Package },
     { name: '文章管理', href: '/admin/posts', icon: FileText },
     { name: '线索留言', href: '/admin/inquiries', icon: MessageSquare },
+    { name: '系统设置', href: '/admin/settings', icon: Settings },
 ];
 
 export default function AdminSidebar() {
@@ -44,8 +46,8 @@ export default function AdminSidebar() {
                             key={item.name}
                             href={item.href}
                             className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${isActive
-                                    ? 'bg-blue-600 text-white'
-                                    : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+                                ? 'bg-blue-600 text-white'
+                                : 'text-gray-300 hover:bg-gray-800 hover:text-white'
                                 }`}
                         >
                             <Icon className="h-5 w-5" />

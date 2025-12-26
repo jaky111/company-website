@@ -1,3 +1,6 @@
+// 强制设为动态页面
+export const dynamic = 'force-dynamic';
+
 import { PrismaClient } from '@prisma/client';
 import InquiryTable from '@/components/admin/InquiryTable';
 

@@ -1,3 +1,6 @@
+// 强制设为动态页面，确保每次访问都从数据库获取最新数据
+export const dynamic = 'force-dynamic';
+
 import { PrismaClient } from '@prisma/client';
 import { Package, FileText, MessageSquare, Eye } from 'lucide-react';
 

@@ -72,6 +72,23 @@ async function main() {
     });
     console.log('✅ Created admin user:', user.username);
 
+    // Create default site config if not exists
+    const existingConfig = await prisma.siteConfig.findFirst();
+    if (!existingConfig) {
+        const siteConfig = await prisma.siteConfig.create({
+            data: {
+                siteName: 'Enterprise Solutions',
+                heroTitle: '企业级解决方案',
+                heroSubtitle: '为您的业务提供全方位的数字化转型服务',
+                heroImage: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200',
+                contactEmail: 'contact@enterprise.com',
+                contactPhone: '400-888-8888',
+                footerText: '© 2024 Enterprise Solutions. All rights reserved.',
+            },
+        });
+        console.log('✅ Created site config:', siteConfig.siteName);
+    }
+
     console.log('🎉 Database seeding completed successfully!');
 }
 

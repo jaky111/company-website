@@ -1,7 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Award, Users, Clock, Shield } from 'lucide-react';
+import { ArrowRight, CheckCircle2, TrendingUp, Users, Award, Clock, Shield } from 'lucide-react';
+import { getSiteConfig } from '@/actions/site-config';
 
 const prisma = new PrismaClient();
 
@@ -11,7 +12,6 @@ async function getFeaturedProducts() {
     where: { isFeatured: true },
     take: 3,
     include: { category: true },
-    orderBy: { createdAt: 'desc' },
   });
   return products;
 }
@@ -48,31 +48,39 @@ const advantages = [
   },
 ];
 
-export default async function HomePage() {
-  const [featuredProducts, latestNews] = await Promise.all([
+export default async function Home() {
+  const [featuredProducts, latestNews, siteConfig] = await Promise.all([
     getFeaturedProducts(),
     getLatestNews(),
+    getSiteConfig(),
   ]);
 
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-900 to-blue-700 text-white py-24 lg:py-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <h1 className="text-4xl font-bold tracking-tight sm:text-6xl mb-6">
-              构建未来的企业级解决方案
-            </h1>
-            <p className="text-lg leading-8 text-blue-100 mb-10">
-              为企业提供全方位的数字化转型服务,助力业务创新与效率提升
-            </p>
-            <Link
-              href="/contact"
-              className="inline-block rounded-md bg-white px-8 py-3 text-base font-semibold text-blue-900 shadow-sm hover:bg-blue-50 transition-colors"
-            >
-              立即咨询
-            </Link>
-          </div>
+      <section className="relative bg-gradient-to-r from-blue-600 to-blue-800 text-white py-32">
+        <div className="absolute inset-0 overflow-hidden">
+          <Image
+            src={siteConfig.heroImage}
+            alt="Hero Background"
+            fill
+            className="object-cover opacity-20"
+            priority
+          />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6">
+            {siteConfig.heroTitle}
+          </h1>
+          <p className="text-xl md:text-2xl mb-8 text-blue-100">
+            {siteConfig.heroSubtitle}
+          </p>
+          <Link
+            href="/contact"
+            className="inline-block rounded-md bg-white px-8 py-3 text-base font-semibold text-blue-900 shadow-sm hover:bg-blue-50 transition-colors"
+          >
+            立即咨询
+          </Link>
         </div>
       </section>
 

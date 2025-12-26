@@ -65,4 +65,19 @@ model Inquiry {
   description String?  @db.Text
   status      String   @default("PENDING") // PENDING, PROCESSED
   createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// 网站配置表(单例)
+model SiteConfig {
+  id            String   @id @default(cuid())
+  siteName      String   @default("Enterprise Solutions")
+  heroTitle     String   @default("企业级解决方案")
+  heroSubtitle  String   @default("为您的业务提供全方位的数字化转型服务")
+  heroImage     String   @default("https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200")
+  contactEmail  String   @default("contact@enterprise.com")
+  contactPhone  String   @default("400-888-8888")
+  footerText    String   @default("© 2024 Enterprise Solutions. All rights reserved.")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }

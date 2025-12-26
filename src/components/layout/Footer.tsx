@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Mail, Phone, MapPin } from 'lucide-react';
+import { getSiteConfig } from '@/actions/site-config';
 
 const footerLinks = {
     company: [
@@ -22,14 +23,18 @@ const footerLinks = {
     ],
 };
 
-export default function Footer() {
+export default async function Footer() {
+    const siteConfig = await getSiteConfig();
+
     return (
         <footer className="bg-gray-900 text-gray-300">
             <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
                 <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
                     {/* Company Info */}
                     <div>
-                        <h3 className="text-lg font-semibold text-white mb-4">Enterprise Demo</h3>
+                        <h3 className="text-lg font-semibold text-white mb-4">
+                            {siteConfig.siteName}
+                        </h3>
                         <p className="text-sm leading-6">
                             致力于为企业提供全方位的数字化转型解决方案,
                             助力企业实现业务创新与效率提升。
@@ -80,11 +85,11 @@ export default function Footer() {
                             </li>
                             <li className="flex items-center gap-2">
                                 <Phone className="h-5 w-5 flex-shrink-0" />
-                                <span className="text-sm">400-123-4567</span>
+                                <span className="text-sm">{siteConfig.contactPhone}</span>
                             </li>
                             <li className="flex items-center gap-2">
                                 <Mail className="h-5 w-5 flex-shrink-0" />
-                                <span className="text-sm">contact@enterprise.com</span>
+                                <span className="text-sm">{siteConfig.contactEmail}</span>
                             </li>
                         </ul>
                     </div>
@@ -93,7 +98,7 @@ export default function Footer() {
                 {/* Bottom Bar */}
                 <div className="mt-12 border-t border-gray-800 pt-8">
                     <p className="text-center text-sm">
-                        © {new Date().getFullYear()} Enterprise Demo. All rights reserved. |
+                        {siteConfig.footerText} |
                         <Link href="#" className="hover:text-white ml-1">
                             京ICP备XXXXXXXX号
                         </Link>

@@ -1,19 +1,8 @@
-'use client';
-
 import Link from 'next/link';
-import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { getSiteConfig } from '@/actions/site-config';
 
-const navigation = [
-    { name: '首页', href: '/' },
-    { name: '关于我们', href: '/about' },
-    { name: '产品中心', href: '/products' },
-    { name: '新闻动态', href: '/news' },
-    { name: '联系我们', href: '/contact' },
-];
-
-export default function Header() {
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+export default async function Header() {
+    const siteConfig = await getSiteConfig();
 
     return (
         <header className="sticky top-0 z-50 bg-white shadow-sm">
@@ -21,37 +10,44 @@ export default function Header() {
                 {/* Logo */}
                 <div className="flex lg:flex-1">
                     <Link href="/" className="-m-1.5 p-1.5">
-                        <span className="text-xl font-bold text-gray-900">Enterprise Demo</span>
+                        <span className="text-xl font-bold text-gray-900">
+                            {siteConfig.siteName}
+                        </span>
                     </Link>
                 </div>
 
-                {/* Mobile menu button */}
-                <div className="flex lg:hidden">
-                    <button
-                        type="button"
-                        className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    >
-                        <span className="sr-only">打开主菜单</span>
-                        {mobileMenuOpen ? (
-                            <X className="h-6 w-6" aria-hidden="true" />
-                        ) : (
-                            <Menu className="h-6 w-6" aria-hidden="true" />
-                        )}
-                    </button>
-                </div>
-
-                {/* Desktop navigation */}
+                {/* Desktop Navigation */}
                 <div className="hidden lg:flex lg:gap-x-8">
-                    {navigation.map((item) => (
-                        <Link
-                            key={item.name}
-                            href={item.href}
-                            className="text-sm font-semibold leading-6 text-gray-900 hover:text-blue-600 transition-colors"
-                        >
-                            {item.name}
-                        </Link>
-                    ))}
+                    <Link
+                        href="/"
+                        className="text-sm font-semibold leading-6 text-gray-900 hover:text-blue-600 transition-colors"
+                    >
+                        首页
+                    </Link>
+                    <Link
+                        href="/about"
+                        className="text-sm font-semibold leading-6 text-gray-900 hover:text-blue-600 transition-colors"
+                    >
+                        关于我们
+                    </Link>
+                    <Link
+                        href="/products"
+                        className="text-sm font-semibold leading-6 text-gray-900 hover:text-blue-600 transition-colors"
+                    >
+                        产品中心
+                    </Link>
+                    <Link
+                        href="/news"
+                        className="text-sm font-semibold leading-6 text-gray-900 hover:text-blue-600 transition-colors"
+                    >
+                        新闻动态
+                    </Link>
+                    <Link
+                        href="/contact"
+                        className="text-sm font-semibold leading-6 text-gray-900 hover:text-blue-600 transition-colors"
+                    >
+                        联系我们
+                    </Link>
                 </div>
 
                 {/* CTA Button */}
@@ -63,32 +59,17 @@ export default function Header() {
                         联系我们
                     </Link>
                 </div>
-            </nav>
 
-            {/* Mobile menu */}
-            {mobileMenuOpen && (
-                <div className="lg:hidden">
-                    <div className="space-y-1 px-4 pb-3 pt-2">
-                        {navigation.map((item) => (
-                            <Link
-                                key={item.name}
-                                href={item.href}
-                                className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600 transition-colors"
-                                onClick={() => setMobileMenuOpen(false)}
-                            >
-                                {item.name}
-                            </Link>
-                        ))}
-                        <Link
-                            href="/contact"
-                            className="block rounded-md bg-blue-600 px-3 py-2 text-base font-semibold text-white hover:bg-blue-500 transition-colors text-center mt-4"
-                            onClick={() => setMobileMenuOpen(false)}
-                        >
-                            联系我们
-                        </Link>
-                    </div>
+                {/* Mobile Menu - Simplified */}
+                <div className="flex lg:hidden">
+                    <Link
+                        href="/contact"
+                        className="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white"
+                    >
+                        联系
+                    </Link>
                 </div>
-            )}
+            </nav>
         </header>
     );
 }
